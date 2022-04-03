@@ -1,0 +1,27 @@
+{
+  "name": "forkfiy",
+  "version": "1.0.0",
+  "description": "recipies web app ",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedmaher2481998/jsProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahmedmaher2481998/jsProject/issues"
+  },
+  "homepage": "https://github.com/ahmedmaher2481998/jsProject#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.4.1",
+    "parcel": "^2.0.0-rc.0"
+  },
+  "dependencies": {
+    "sass": "^1.49.11"
+  }
+}
