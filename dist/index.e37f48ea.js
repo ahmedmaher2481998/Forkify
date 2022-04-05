@@ -654,9 +654,8 @@ let showRecipe = async function() {
 [
     'hashchange',
     'load'
-].forEach((ev)=>{
-    window.addEventListener(ev, showRecipe);
-});
+].forEach((ev)=>window.addEventListener(ev, showRecipe)
+);
 
 },{"url:../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ"}],"loVOp":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "icons.dfd7a6db.svg" + "?" + Date.now();
