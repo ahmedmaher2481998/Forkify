@@ -552,8 +552,11 @@ function spinner(parentElem) {
 // render recipie
 let showRecipe = async function() {
     try {
+        let id = document.location.hash.slice(1);
+        console.log(id);
+        if (!id) return;
         spinner(recipeContainer);
-        let rowData = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886');
+        let rowData = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
         rowData = await rowData.json();
         // erro handiling
         if (rowData.status === 'fail') throw new Error(rowData.message);
@@ -582,7 +585,6 @@ let showRecipe = async function() {
             </svg>
             <span class="recipe__info-data recipe__info-data--people">${recipe.servings}</span>
             <span class="recipe__info-text">servings</span>
-
             <div class="recipe__info-buttons">
               <button class="btn--tiny btn--increase-servings">
                 <svg>
@@ -596,7 +598,6 @@ let showRecipe = async function() {
               </button>
             </div>
           </div>
-
           <div class="recipe__user-generated">
             <svg>
               <use href="${_iconsSvgDefault.default}.svg#icon-user"></use>
@@ -608,7 +609,6 @@ let showRecipe = async function() {
             </svg>
           </button>
         </div>
-
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">
@@ -626,7 +626,6 @@ let showRecipe = async function() {
         }).join('')}
           </ul>
         </div>
-
         <div class="recipe__directions">
           <h2 class="heading--2">How to cook it</h2>
           <p class="recipe__directions-text">
@@ -652,7 +651,12 @@ let showRecipe = async function() {
         alert(err);
     }
 };
-showRecipe();
+[
+    'hashchange',
+    'load'
+].forEach((ev)=>{
+    window.addEventListener(ev, showRecipe);
+});
 
 },{"url:../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ"}],"loVOp":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "icons.dfd7a6db.svg" + "?" + Date.now();
