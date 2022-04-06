@@ -14,6 +14,7 @@ class RecipeView {
     let markup = this.#generateMarkup();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  //   render a spinner to the parentElement
   renderSpinner() {
     let markup = `<div class="spinner">
                 <svg>
@@ -23,19 +24,29 @@ class RecipeView {
     this.#parentElement.innerHTML = '';
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  //   clears the parentElement
   #clear() {
     this.#parentElement.innerHTML = '';
   }
 
+  //   handles the event using a handler fun from the controller .js
+  addHandlerRender(handler) {
+    console.log(`add handler render is called ${handler}`);
+    [('hashchange', 'load')].forEach(ev =>
+      window.addEventListener(ev, handler)
+    );
+  }
+
+  //   generate recipie mark up
   #generateMarkup() {
     return ` 
     <figure class="recipe__fig">
-          <img src="${this.#data.image_url}" alt="${
+            <img src="${this.#data.image_url}" alt="${
       this.#data.title
     }" class="recipe__img" />
-          <h1 class="recipe__title">
+            <h1 class="recipe__title">
             <span>${this.#data.title}</span>
-          </h1>
+            </h1>
         </figure>
 
         <div class="recipe__details">
@@ -110,6 +121,7 @@ class RecipeView {
         </div>
     `;
   }
+  //   generate markup for ing to nest in recipe mark up
   #generateMarkupIngerdents(ing) {
     return `<li class="recipe__ingredient">
             <svg class="recipe__icon">

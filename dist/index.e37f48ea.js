@@ -515,25 +515,14 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"aenu9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _webImmediateJs = require("core-js/modules/web.immediate.js"); /*
-Object { publisher: "My Baking Addiction",
-  ingredients: (7) […],
-  source_url: "http://www.mybakingaddiction.com/spicy-chicken-and-pepper-jack-pizza-recipe/", 
-  image_url: "http://forkify-api.herokuapp.com/images/FlatBread21of1a180.jpg", 
-  title: "Spicy Chicken and Pepper Jack Pizza",
-  servings: 4,
-  cooking_time: 45,
-  id: "5ed6604591c37cdc054bc886" }
-*/ 
+var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _modelJs = require("./model.js");
 var _recipeviewJs = require("./views/recipeview.js");
 var _recipeviewJsDefault = parcelHelpers.interopDefault(_recipeviewJs);
 const recipeContainer = document.querySelector('.recipe');
 // https://forkify-api.herokuapp.com/v2
-//https://forkify-api.herokuapp.com/api/v2/recipes/:id
-// recipe object model
-///////////////////////////////////////
+//-------------------------------------
 // render recipie
 let controlRecipes = async function() {
     try {
@@ -549,11 +538,10 @@ let controlRecipes = async function() {
         console.error(`${err}`);
     }
 };
-[
-    'hashchange',
-    'load'
-].forEach((ev)=>window.addEventListener(ev, controlRecipes)
-);
+let init = function() {
+    _recipeviewJsDefault.default.addHandlerRender(controlRecipes);
+};
+init();
 
 },{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
@@ -2224,7 +2212,7 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC
 );
 const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
-const TIMEOUT_SEC = 0.1;
+const TIMEOUT_SEC = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lVRAz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2244,6 +2232,7 @@ const timeout2 = function(s) {
     return new Promise((_, reject)=>{
         setTimeout(function() {
             reject(new Error(`request took too long! Time Out After ${s} seconds `));
+            console.log(s);
         }, s * 1000);
     });
 };
@@ -14980,6 +14969,7 @@ class RecipeView {
         let markup = this.#generateMarkup();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
+    //   render a spinner to the parentElement
     renderSpinner() {
         let markup = `<div class="spinner">
                 <svg>
@@ -14989,16 +14979,26 @@ class RecipeView {
         this.#parentElement.innerHTML = '';
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
+    //   clears the parentElement
      #clear() {
         this.#parentElement.innerHTML = '';
     }
+    //   handles the event using a handler fun from the controller .js
+    addHandlerRender(handler) {
+        console.log(`add handler render is called ${handler}`);
+        [
+            'load'
+        ].forEach((ev)=>window.addEventListener(ev, handler)
+        );
+    }
+    //   generate recipie mark up
      #generateMarkup() {
         return ` 
     <figure class="recipe__fig">
-          <img src="${this.#data.image_url}" alt="${this.#data.title}" class="recipe__img" />
-          <h1 class="recipe__title">
+            <img src="${this.#data.image_url}" alt="${this.#data.title}" class="recipe__img" />
+            <h1 class="recipe__title">
             <span>${this.#data.title}</span>
-          </h1>
+            </h1>
         </figure>
 
         <div class="recipe__details">
@@ -15065,6 +15065,7 @@ class RecipeView {
         </div>
     `;
     }
+    //   generate markup for ing to nest in recipe mark up
      #generateMarkupIngerdents(ing) {
         return `<li class="recipe__ingredient">
             <svg class="recipe__icon">

@@ -6,9 +6,7 @@ import RecipeView from './views/recipeview.js';
 const recipeContainer = document.querySelector('.recipe');
 
 // https://forkify-api.herokuapp.com/v2
-//https://forkify-api.herokuapp.com/api/v2/recipes/:id
-// recipe object model
-///////////////////////////////////////
+//-------------------------------------
 // render recipie
 let controlRecipes = async function () {
   try {
@@ -27,18 +25,7 @@ let controlRecipes = async function () {
     console.error(`${err}`);
   }
 };
-
-['hashchange', 'load'].forEach(ev =>
-  window.addEventListener(ev, controlRecipes)
-);
-
-/*
-Object { publisher: "My Baking Addiction",
-  ingredients: (7) […],
-  source_url: "http://www.mybakingaddiction.com/spicy-chicken-and-pepper-jack-pizza-recipe/", 
-  image_url: "http://forkify-api.herokuapp.com/images/FlatBread21of1a180.jpg", 
-  title: "Spicy Chicken and Pepper Jack Pizza",
-  servings: 4,
-  cooking_time: 45,
-  id: "5ed6604591c37cdc054bc886" }
-*/
+let init = function () {
+  RecipeView.addHandlerRender(controlRecipes);
+};
+init();
