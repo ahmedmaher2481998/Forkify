@@ -3,7 +3,7 @@ import icons from 'url:../../../src/img/icons.svg';
 
 //impoert library to fix floats numbers in in grediants
 import { Fraction } from 'fractional';
-
+let errmsg = 'This recipe is not found ,Please try another one !!';
 //the main viwer class
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
@@ -11,8 +11,6 @@ class RecipeView {
   render(data) {
     this.#data = data;
     this.#clear();
-    this.#errmsg = 'This recipe is not found ,Please try another one !!';
-    console.log(this.#errmsg);
     this.msg;
     this.renderError;
     this.renderMessage;
@@ -43,9 +41,8 @@ class RecipeView {
   }
 
   // erro handling
-  renderError(msg = this.#errmsg) {
-    let markup = `
-    <div class="error">
+  renderError(msg = errmsg) {
+    let markup = `<div class="error">
             <div>
               <svg>
                 <use href="${icons}#icon-alert-triangle"></use>
