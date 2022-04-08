@@ -11,9 +11,15 @@ class RecipeView {
   render(data) {
     this.#data = data;
     this.#clear();
+    this.#errmsg = 'This recipe is not found ,Please try another one !!';
+    console.log(this.#errmsg);
+    this.msg;
+    this.renderError;
+    this.renderMessage;
     let markup = this.#generateMarkup();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+
   //   render a spinner to the parentElement
   renderSpinner() {
     let markup = `<div class="spinner">
@@ -21,7 +27,7 @@ class RecipeView {
                 <use href="${icons}#icon-loader"></use>
                 </svg>
             </div>`;
-    this.#parentElement.innerHTML = '';
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   //   clears the parentElement
@@ -31,10 +37,24 @@ class RecipeView {
 
   //   handles the event using a handler fun from the controller .js
   addHandlerRender(handler) {
-    console.log(`add handler render is called ${handler}`);
     [('hashchange', 'load')].forEach(ev =>
       window.addEventListener(ev, handler)
     );
+  }
+
+  // erro handling
+  renderError(msg = this.#errmsg) {
+    let markup = `
+    <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${msg}</p>
+    </div>`;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   //   generate recipie mark up
@@ -121,6 +141,7 @@ class RecipeView {
         </div>
     `;
   }
+
   //   generate markup for ing to nest in recipe mark up
   #generateMarkupIngerdents(ing) {
     return `<li class="recipe__ingredient">

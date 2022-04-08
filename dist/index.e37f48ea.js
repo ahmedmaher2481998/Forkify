@@ -535,7 +535,8 @@ let controlRecipes = async function() {
         // rendering the recipe
         _recipeviewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
-        console.error(`${err}`);
+        console.error(`${err}**`);
+        _recipeviewJsDefault.default.renderError();
     }
 };
 let init = function() {
@@ -2195,12 +2196,12 @@ async function loadRecipe(id) {
     try {
         rowData = await _helper.getJson(`${_config.API_URL}${id}`);
         let { data  } = rowData;
-        console.log(data);
+        // console.log(data);
         state.recipe = {
             ...data.recipe
         };
     } catch (err) {
-        console.error(`${err}`);
+        throw err;
     }
 }
 
@@ -2212,7 +2213,7 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC
 );
 const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
-const TIMEOUT_SEC = 10;
+const TIMEOUT_SEC = 5;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lVRAz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2232,11 +2233,11 @@ const timeout2 = function(s) {
     return new Promise((_, reject)=>{
         setTimeout(function() {
             reject(new Error(`request took too long! Time Out After ${s} seconds `));
-            console.log(s);
+        // console.log(s);
         }, s * 1000);
     });
 };
-const getJson = async function(url) {
+const getJson = async (url)=>{
     try {
         // let rowData = await fetch(`${API_URL}${id}`);
         let rowData = await Promise.race([
@@ -14966,6 +14967,11 @@ class RecipeView {
     render(data) {
         this.#data = data;
         this.#clear();
+        this.#errmsg = 'This recipe is not found ,Please try another one !!';
+        console.log(this.#errmsg);
+        this.msg;
+        this.renderError;
+        this.renderMessage;
         let markup = this.#generateMarkup();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
@@ -14976,7 +14982,7 @@ class RecipeView {
                 <use href="${_iconsSvgDefault.default}#icon-loader"></use>
                 </svg>
             </div>`;
-        this.#parentElement.innerHTML = '';
+        this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     //   clears the parentElement
@@ -14985,11 +14991,24 @@ class RecipeView {
     }
     //   handles the event using a handler fun from the controller .js
     addHandlerRender(handler) {
-        console.log(`add handler render is called ${handler}`);
         [
             'load'
         ].forEach((ev)=>window.addEventListener(ev, handler)
         );
+    }
+    // erro handling
+    renderError(msg = this.#errmsg) {
+        let markup = `
+    <div class="error">
+            <div>
+              <svg>
+                <use href="${_iconsSvgDefault.default}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${msg}</p>
+    </div>`;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     //   generate recipie mark up
      #generateMarkup() {

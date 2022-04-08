@@ -12,11 +12,11 @@ const timeout2 = function (s) {
   return new Promise((_, reject) => {
     setTimeout(function () {
       reject(new Error(`request took too long! Time Out After ${s} seconds `));
-      console.log(s);
+      // console.log(s);
     }, s * 1000);
   });
 };
-export const getJson = async function (url) {
+export const getJson = async url => {
   try {
     // let rowData = await fetch(`${API_URL}${id}`);
     let rowData = await Promise.race([fetch(url), timeout2(TIMEOUT_SEC)]);

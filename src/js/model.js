@@ -8,9 +8,9 @@ export async function loadRecipe(id) {
   try {
     rowData = await getJson(`${API_URL}${id}`);
     let { data } = rowData;
-    console.log(data);
+    // console.log(data);
     state.recipe = { ...data.recipe };
   } catch (err) {
-    console.error(`${err}`);
+    throw err;
   }
 }
