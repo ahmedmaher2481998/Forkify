@@ -22,7 +22,7 @@ let controlRecipes = async function () {
     // rendering the recipe
     RecipeView.render(model.state.recipe);
   } catch (err) {
-    console.error(`${err}**`);
+    console.error(`${err} at controller `);
     RecipeView.renderError();
   }
 };
@@ -30,3 +30,6 @@ let init = function () {
   RecipeView.addHandlerRender(controlRecipes);
 };
 init();
+
+// test
+window.addEventListener('hashchange', () => console.log('hashchanged'));

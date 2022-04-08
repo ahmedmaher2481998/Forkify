@@ -3,11 +3,13 @@ import icons from 'url:../../../src/img/icons.svg';
 
 //impoert library to fix floats numbers in in grediants
 import { Fraction } from 'fractional';
-let errmsg = 'This recipe is not found ,Please try another one !!';
 //the main viwer class
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errmsg = 'This recipe is not found ,Please try another one !!';
+
+  //rendering data to the usable format
   render(data) {
     this.#data = data;
     this.#clear();
@@ -35,13 +37,13 @@ class RecipeView {
 
   //   handles the event using a handler fun from the controller .js
   addHandlerRender(handler) {
-    [('hashchange', 'load')].forEach(ev =>
-      window.addEventListener(ev, handler)
-    );
+    ['hashchange', 'load'].forEach(ev => {
+      window.addEventListener(ev, handler);
+    });
   }
 
   // erro handling
-  renderError(msg = errmsg) {
+  renderError(msg = this.#errmsg) {
     let markup = `<div class="error">
             <div>
               <svg>

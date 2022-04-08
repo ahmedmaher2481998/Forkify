@@ -535,7 +535,7 @@ let controlRecipes = async function() {
         // rendering the recipe
         _recipeviewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
-        console.error(`${err}**`);
+        console.error(`${err} at controller `);
         _recipeviewJsDefault.default.renderError();
     }
 };
@@ -543,6 +543,9 @@ let init = function() {
     _recipeviewJsDefault.default.addHandlerRender(controlRecipes);
 };
 init();
+// test
+window.addEventListener('hashchange', ()=>console.log('hashchanged')
+);
 
 },{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
@@ -14960,11 +14963,12 @@ var _iconsSvg = require("url:../../../src/img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 //impoert library to fix floats numbers in in grediants
 var _fractional = require("fractional");
-let errmsg = 'This recipe is not found ,Please try another one !!';
 //the main viwer class
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
     #data;
+    #errmsg = 'This recipe is not found ,Please try another one !!';
+    //rendering data to the usable format
     render(data) {
         this.#data = data;
         this.#clear();
@@ -14991,12 +14995,14 @@ class RecipeView {
     //   handles the event using a handler fun from the controller .js
     addHandlerRender(handler) {
         [
+            'hashchange',
             'load'
-        ].forEach((ev)=>window.addEventListener(ev, handler)
-        );
+        ].forEach((ev)=>{
+            window.addEventListener(ev, handler);
+        });
     }
     // erro handling
-    renderError(msg = errmsg) {
+    renderError(msg = this.#errmsg) {
         let markup = `<div class="error">
             <div>
               <svg>
