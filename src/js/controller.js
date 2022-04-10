@@ -44,7 +44,6 @@ let searchControler = async function () {
   await model.loadSearchResult(query);
 
   ResultView.render(model.getSearchResultPage());
-  // console.log(model.state.search);
   pagniationview.render(model.state.search);
 };
 

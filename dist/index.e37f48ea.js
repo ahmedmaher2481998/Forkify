@@ -554,7 +554,6 @@ let searchControler = async function() {
     if (!query) return;
     await _modelJs.loadSearchResult(query);
     _resultsviewJsDefault.default.render(_modelJs.getSearchResultPage());
-    // console.log(model.state.search);
     _pagniationviewJsDefault.default.render(_modelJs.state.search);
 };
 let paginationControler = (p)=>{
@@ -2271,7 +2270,7 @@ parcelHelpers.export(exports, "REC_PER_PAGE", ()=>REC_PER_PAGE
 );
 const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
 const TIMEOUT_SEC = 5;
-const REC_PER_PAGE = 10;
+const REC_PER_PAGE = 50;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lVRAz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
