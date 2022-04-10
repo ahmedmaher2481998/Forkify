@@ -3,57 +3,17 @@ import icons from 'url:../../../src/img/icons.svg';
 
 //impoert library to fix floats numbers in in grediants
 import { Fraction } from 'fractional';
+// impoerint the parent class
+import View from './view';
 //the main viwer class
-class RecipeView {
+class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
-  _data;
-  _errmsg = 'This recipe is not found ,Please try another one !!';
-
-  //rendering data to the usable format
-  render(data) {
-    this._data = data;
-    this._clear();
-    this.msg;
-    this.renderError;
-    this.renderMessage;
-    let markup = this._generateMarkup();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  //   render a spinner to the parentElement
-  renderSpinner() {
-    let markup = `<div class="spinner">
-                <svg>
-                <use href="${icons}#icon-loader"></use>
-                </svg>
-            </div>`;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-  //   clears the parentElement
-  _clear() {
-    this._parentElement.innerHTML = '';
-  }
 
   //   handles the event using a handler fun from the controller .js
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => {
       window.addEventListener(ev, handler);
     });
-  }
-
-  // erro handling
-  renderError(msg = this._errmsg) {
-    let markup = `<div class="error">
-            <div>
-              <svg>
-                <use href="${icons}#icon-alert-triangle"></use>
-              </svg>
-            </div>
-            <p>${msg}</p>
-    </div>`;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   //   generate recipie mark up

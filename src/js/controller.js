@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime/runtime';
 import * as model from './model.js';
 import RecipeView from './views/recipeview.js';
+import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
 
 const recipeContainer = document.querySelector('.recipe');
@@ -30,10 +31,15 @@ let controlRecipes = async function () {
 };
 // search controler
 let searchControler = async function () {
+  ResultView.renderSpinner();
+
   let query = searchview.getQuery();
+
   if (!query) return;
+
   await model.loadSearchResult(query);
-  // console.log(model.state.search.results);
+
+  ResultView.render(model.state.search.results);
 };
 let init = function () {
   // publisher subscriber for view recipe
