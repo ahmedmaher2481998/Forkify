@@ -7,7 +7,9 @@ import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
 
 const recipeContainer = document.querySelector('.recipe');
-
+if (module.hot) {
+  module.hot.accept;
+}
 // https://forkify-api.herokuapp.com/v2
 //-------------------------------------
 // render recipie
@@ -48,6 +50,3 @@ let init = function () {
   searchview.addSearchHandler(searchControler);
 };
 init();
-
-// test
-// window.addEventListener('hashchange', () => console.log('hashchanged'));

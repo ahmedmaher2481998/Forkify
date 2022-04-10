@@ -2,11 +2,11 @@ import icons from 'url:../../../src/img/icons.svg';
 
 export default class View {
   _data;
-  _errmsg = 'This recipe is not found ,Please try another one !!';
   _msg;
-
   //rendering data to the usable format
   render(data) {
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
     this._data = data;
     this._clear();
     let markup = this._generateMarkup();

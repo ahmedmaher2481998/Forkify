@@ -2,6 +2,7 @@ import View from './view.js';
 import icons from 'url:../../../src/img/icons.svg';
 class ResultsView extends View {
   _parentElement = document.querySelector('.results');
+  _errmsg = `There No Search Results For this world , make sure you types it right `;
   _generateMarkup() {
     return this._data.map(this._generateMarkupPreview).join('');
   }

@@ -515,8 +515,7 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"aenu9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _webImmediateJs = require("core-js/modules/web.immediate.js"); // test
- // window.addEventListener('hashchange', () => console.log('hashchanged'));
+var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _modelJs = require("./model.js");
 var _recipeviewJs = require("./views/recipeview.js");
@@ -526,6 +525,7 @@ var _resultsviewJsDefault = parcelHelpers.interopDefault(_resultsviewJs);
 var _searchviewJs = require("./views/searchview.js");
 var _searchviewJsDefault = parcelHelpers.interopDefault(_searchviewJs);
 const recipeContainer = document.querySelector('.recipe');
+if (module.hot) module.hot.accept;
 // https://forkify-api.herokuapp.com/v2
 //-------------------------------------
 // render recipie
@@ -15000,6 +15000,7 @@ var _viewDefault = parcelHelpers.interopDefault(_view);
 //the main viwer class
 class RecipeView extends _viewDefault.default {
     _parentElement = document.querySelector('.recipe');
+    _errmsg = 'This recipe is not found ,Please try another one !!';
     //   handles the event using a handler fun from the controller .js
     addHandlerRender(handler) {
         [
@@ -15047,9 +15048,9 @@ class RecipeView extends _viewDefault.default {
             </div>
           </div>
           <div class="recipe__user-generated">
-            <svg>
+            <!-- <svg>
               <use href="${_iconsSvgDefault.default}.svg#icon-user"></use>
-            </svg>
+            </svg>-->
           </div>
           <button class="btn--round">
             <svg class="">
@@ -15396,10 +15397,10 @@ var _iconsSvg = require("url:../../../src/img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
-    _errmsg = 'This recipe is not found ,Please try another one !!';
     _msg;
     //rendering data to the usable format
     render(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         this._clear();
         let markup = this._generateMarkup();
@@ -15468,6 +15469,7 @@ var _iconsSvg = require("url:../../../src/img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class ResultsView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.results');
+    _errmsg = `There No Search Results For this world , make sure you types it right `;
     _generateMarkup() {
         return this._data.map(this._generateMarkupPreview).join('');
     }

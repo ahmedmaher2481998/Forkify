@@ -8,7 +8,7 @@ import View from './view';
 //the main viwer class
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
-
+  _errmsg = 'This recipe is not found ,Please try another one !!';
   //   handles the event using a handler fun from the controller .js
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => {
@@ -60,9 +60,9 @@ class RecipeView extends View {
             </div>
           </div>
           <div class="recipe__user-generated">
-            <svg>
+            <!-- <svg>
               <use href="${icons}.svg#icon-user"></use>
-            </svg>
+            </svg>-->
           </div>
           <button class="btn--round">
             <svg class="">
