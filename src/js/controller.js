@@ -1,7 +1,9 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { async } from 'regenerator-runtime/runtime';
 import * as model from './model.js';
 import RecipeView from './views/recipeview.js';
+import searchview from './views/searchview.js';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -26,10 +28,20 @@ let controlRecipes = async function () {
     RecipeView.renderError();
   }
 };
+// search controler
+let searchControler = async function () {
+  let query = searchview.getQuery();
+  if (!query) return;
+  await model.loadSearchResult(query);
+  // console.log(model.state.search.results);
+};
 let init = function () {
+  // publisher subscriber for view recipe
   RecipeView.addHandlerRender(controlRecipes);
+  // publisher subscriber for view search results
+  searchview.addSearchHandler(searchControler);
 };
 init();
 
 // test
-window.addEventListener('hashchange', () => console.log('hashchanged'));
+// window.addEventListener('hashchange', () => console.log('hashchanged'));
