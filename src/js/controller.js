@@ -5,6 +5,7 @@ import * as model from './model.js';
 import RecipeView from './views/recipeview.js';
 import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
+// import {getSearchResultPage} from './model'
 
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
@@ -41,7 +42,7 @@ let searchControler = async function () {
 
   await model.loadSearchResult(query);
 
-  ResultView.render(model.state.search.results);
+  ResultView.render(model.getSearchResultPage(3));
 };
 let init = function () {
   // publisher subscriber for view recipe
