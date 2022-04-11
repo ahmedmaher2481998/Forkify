@@ -15080,7 +15080,7 @@ class RecipeView extends _viewDefault.default {
                   <use href="${_iconsSvgDefault.default}.svg#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--decrease-servings">
                 <svg>
                   <use href="${_iconsSvgDefault.default}.svg#icon-plus-circle"></use>
                 </svg>
