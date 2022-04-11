@@ -567,7 +567,7 @@ const controlServings = function(newServings) {
     // Update the servings in the state
     _modelJs.updateServings(newServings);
     // Update the recipe View
-    _recipeviewJsDefault.default.render(_modelJs.state.recipe);
+    _recipeviewJsDefault.default.updateRecipe(_modelJs.state.recipe);
 };
 let init = function() {
     // publisher subscriber for view recipe
@@ -15460,6 +15460,24 @@ class View {
         this._clear();
         let markup = this._generateMarkup();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    // stopped at 21.21 vid 18 devoloping dom update algo
+    // Update the changed parts only just like react
+    updateRecipe(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        this._data = data;
+        // virtual dom from the markup  and making a rray out of it
+        let newDom = [
+            ...document.createRange().createContextualFragment(this._generateMarkup()).querySelectorAll('*'), 
+        ];
+        // the exisiting dom and making a rray out of it
+        let currentDom = [
+            ...this._parentElement.querySelectorAll('*')
+        ];
+        console.log(newDom, '.current', currentDom);
+        newDom.forEach((node, i)=>{
+            if (!node.isEqualNode(currentDom[i]) && node.firstChild.nodeValue.trim() != '') currentDom[i].textContent = node.textContent;
+        });
     }
     //   render a spinner to the parentElement
     renderSpinner() {
