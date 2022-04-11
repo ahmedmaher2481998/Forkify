@@ -540,6 +540,10 @@ let controlRecipes = async function() {
         _recipeviewJsDefault.default.renderSpinner();
         // loading recipe
         await _modelJs.loadRecipe(id);
+        // console.log('before', model.state.recipe.ingredients);
+        // // test
+        // controlServings();
+        // console.log(model.state.recipe.ingredients);
         // rendering the recipe
         _recipeviewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
@@ -558,8 +562,13 @@ let searchControler = async function() {
 };
 let paginationControler = (p)=>{
     _resultsviewJsDefault.default.render(_modelJs.getSearchResultPage(p));
-    // console.log(model.state.search);
     _pagniationviewJsDefault.default.render(_modelJs.state.search);
+};
+const controlServings = function() {
+    // Update the servings in the state
+    _modelJs.updateServings(8);
+    // Update the recipe View
+    _recipeviewJsDefault.default.render(_modelJs.state.recipe);
 };
 let init = function() {
     // publisher subscriber for view recipe
@@ -2217,6 +2226,8 @@ parcelHelpers.export(exports, "loadSearchResult", ()=>loadSearchResult
 );
 parcelHelpers.export(exports, "getSearchResultPage", ()=>getSearchResultPage
 );
+parcelHelpers.export(exports, "updateServings", ()=>updateServings
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _config = require("./config");
 var _helper = require("./helper");
@@ -2257,6 +2268,12 @@ let getSearchResultPage = (page = state.search.page)=>{
     let start = (page - 1) * _config.REC_PER_PAGE;
     let end = page * _config.REC_PER_PAGE;
     return state.search.results.slice(start, end);
+};
+const updateServings = (newServings)=>{
+    state.recipe.ingredients.forEach((ingredient)=>{
+        ingredient.quantity = ingredient.quantity * (newServings / state.recipe.servings);
+    });
+    state.recipe.servings = newServings;
 };
 
 },{"regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helper":"lVRAz"}],"k5Hzs":[function(require,module,exports) {
