@@ -5,6 +5,7 @@ import icons from 'url:../../../src/img/icons.svg';
 import { Fraction } from 'fractional';
 // impoerint the parent class
 import View from './view';
+import { isGeneratorFunction } from 'regenerator-runtime';
 //the main viwer class
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
@@ -13,6 +14,17 @@ class RecipeView extends View {
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => {
       window.addEventListener(ev, handler);
+    });
+  }
+
+  //servings event handlers
+  addServingsHandler(handler) {
+    this._parentElement.addEventListener('click', e => {
+      let btn = e.target.closest('.btn--update-servings');
+      if (!btn) return;
+      let newServings = parseInt(btn.dataset.newServings);
+      if (newServings < 1) return;
+      handler(newServings);
     });
   }
 
@@ -47,12 +59,16 @@ class RecipeView extends View {
             }</span>
             <span class="recipe__info-text">servings</span>
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-new-servings="${
+                this._data.servings - 1
+              }">
                 <svg>
                   <use href="${icons}.svg#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--decrease-servings">
+              <button class="btn--tiny btn--update-servings" data-new-servings="${
+                this._data.servings + 1
+              }">
                 <svg>
                   <use href="${icons}.svg#icon-plus-circle"></use>
                 </svg>

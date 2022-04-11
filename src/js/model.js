@@ -45,3 +45,5 @@ export const updateServings = newServings => {
   });
   state.recipe.servings = newServings;
 };
+
+export const getNewServings = e => {};

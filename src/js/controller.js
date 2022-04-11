@@ -6,7 +6,6 @@ import pagniationview from './views/pagniationview.js';
 import RecipeView from './views/recipeview.js';
 import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
-// import {getSearchResultPage} from './model'
 
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
@@ -56,9 +55,9 @@ let paginationControler = p => {
   pagniationview.render(model.state.search);
 };
 
-const controlServings = function () {
+const controlServings = function (newServings) {
   // Update the servings in the state
-  model.updateServings(8);
+  model.updateServings(newServings);
   // Update the recipe View
   RecipeView.render(model.state.recipe);
 };
@@ -72,5 +71,8 @@ let init = function () {
 
   // publisher subscriber for view paginesation buttons
   pagniationview.addClickHandler(paginationControler);
+
+  // publisher subscriber for view Servings btns
+  RecipeView.addServingsHandler(controlServings);
 };
 init();

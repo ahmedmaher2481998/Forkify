@@ -526,7 +526,6 @@ var _resultsviewJs = require("./views/resultsview.js");
 var _resultsviewJsDefault = parcelHelpers.interopDefault(_resultsviewJs);
 var _searchviewJs = require("./views/searchview.js");
 var _searchviewJsDefault = parcelHelpers.interopDefault(_searchviewJs);
-// import {getSearchResultPage} from './model'
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) module.hot.accept;
 // https://forkify-api.herokuapp.com/v2
@@ -564,9 +563,9 @@ let paginationControler = (p)=>{
     _resultsviewJsDefault.default.render(_modelJs.getSearchResultPage(p));
     _pagniationviewJsDefault.default.render(_modelJs.state.search);
 };
-const controlServings = function() {
+const controlServings = function(newServings) {
     // Update the servings in the state
-    _modelJs.updateServings(8);
+    _modelJs.updateServings(newServings);
     // Update the recipe View
     _recipeviewJsDefault.default.render(_modelJs.state.recipe);
 };
@@ -577,6 +576,8 @@ let init = function() {
     _searchviewJsDefault.default.addSearchHandler(searchControler);
     // publisher subscriber for view paginesation buttons
     _pagniationviewJsDefault.default.addClickHandler(paginationControler);
+    // publisher subscriber for view Servings btns
+    _recipeviewJsDefault.default.addServingsHandler(controlServings);
 };
 init();
 
@@ -2228,6 +2229,8 @@ parcelHelpers.export(exports, "getSearchResultPage", ()=>getSearchResultPage
 );
 parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
+parcelHelpers.export(exports, "getNewServings", ()=>getNewServings
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _config = require("./config");
 var _helper = require("./helper");
@@ -2275,6 +2278,7 @@ const updateServings = (newServings)=>{
     });
     state.recipe.servings = newServings;
 };
+const getNewServings = (e)=>{};
 
 },{"regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helper":"lVRAz"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -15037,6 +15041,7 @@ var _fractional = require("fractional");
 // impoerint the parent class
 var _view = require("./view");
 var _viewDefault = parcelHelpers.interopDefault(_view);
+var _regeneratorRuntime = require("regenerator-runtime");
 //the main viwer class
 class RecipeView extends _viewDefault.default {
     _parentElement = document.querySelector('.recipe');
@@ -15048,6 +15053,16 @@ class RecipeView extends _viewDefault.default {
             'load'
         ].forEach((ev)=>{
             window.addEventListener(ev, handler);
+        });
+    }
+    //servings event handlers
+    addServingsHandler(handler) {
+        this._parentElement.addEventListener('click', (e)=>{
+            let btn = e.target.closest('.btn--update-servings');
+            if (!btn) return;
+            let newServings = parseInt(btn.dataset.newServings);
+            if (newServings < 1) return;
+            handler(newServings);
         });
     }
     //   generate recipie mark up
@@ -15075,12 +15090,12 @@ class RecipeView extends _viewDefault.default {
             <span class="recipe__info-data recipe__info-data--people">${this._data.servings}</span>
             <span class="recipe__info-text">servings</span>
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-new-servings="${this._data.servings - 1}">
                 <svg>
                   <use href="${_iconsSvgDefault.default}.svg#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--decrease-servings">
+              <button class="btn--tiny btn--update-servings" data-new-servings="${this._data.servings + 1}">
                 <svg>
                   <use href="${_iconsSvgDefault.default}.svg#icon-plus-circle"></use>
                 </svg>
@@ -15140,7 +15155,7 @@ class RecipeView extends _viewDefault.default {
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../../src/img/icons.svg":"loVOp","fractional":"3SU56","./view":"bWlJ9"}],"loVOp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../../src/img/icons.svg":"loVOp","fractional":"3SU56","./view":"bWlJ9","regenerator-runtime":"dXNgZ"}],"loVOp":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "icons.dfd7a6db.svg" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
