@@ -45,7 +45,7 @@ let searchControler = async function () {
   if (!query) return;
 
   await model.loadSearchResult(query);
-
+  // model.state.search.page = 1;
   ResultView.render(model.getSearchResultPage());
   pagniationview.render(model.state.search);
 };
@@ -63,6 +63,16 @@ const controlServings = function (newServings) {
   RecipeView.update(model.state.recipe);
 };
 
+//add book mark conyroler
+let contolerBookmark = () => {
+  if (!model.state.recipe.Bookmarked) {
+    model.addBookmark(model.state.recipe);
+  } else {
+    model.removeBookmark(model.state.recipe.id);
+  }
+  RecipeView.update(model.state.recipe);
+  console.log(model.state.bookmark);
+};
 let init = function () {
   // publisher subscriber for view recipe
   RecipeView.addHandlerRender(controlRecipes);
@@ -75,5 +85,8 @@ let init = function () {
 
   // publisher subscriber for view Servings btns
   RecipeView.addServingsHandler(controlServings);
+
+  // publisher subscriber for Bookmark
+  RecipeView.addBookmarkHandler(contolerBookmark);
 };
 init();
