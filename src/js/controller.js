@@ -21,14 +21,13 @@ let controlRecipes = async function () {
 
     // spinner till loading is done
     RecipeView.renderSpinner();
+    // update result view to mark the selected recipe
 
+    ResultView.update(model.getSearchResultPage());
     // loading recipe
 
     await model.loadRecipe(id);
-    // console.log('before', model.state.recipe.ingredients);
-    // // test
-    // controlServings();
-    // console.log(model.state.recipe.ingredients);
+
     // rendering the recipe
     RecipeView.render(model.state.recipe);
   } catch (err) {
@@ -36,6 +35,7 @@ let controlRecipes = async function () {
     RecipeView.renderError();
   }
 };
+
 // search controler
 let searchControler = async function () {
   ResultView.renderSpinner();
@@ -60,7 +60,7 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
   // Update the recipe View
 
-  RecipeView.updateRecipe(model.state.recipe);
+  RecipeView.update(model.state.recipe);
 };
 
 let init = function () {

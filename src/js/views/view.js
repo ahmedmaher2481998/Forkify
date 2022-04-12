@@ -13,11 +13,8 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  // stopped at 21.21 vid 18 devoloping dom update algo
   // Update the changed parts only just like react
-  updateRecipe(data) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
+  update(data) {
     this._data = data;
     // virtual dom from the markup  and making a rray out of it
     let newDom = [
@@ -28,13 +25,22 @@ export default class View {
     ];
     // the exisiting dom and making a rray out of it
     let currentDom = [...this._parentElement.querySelectorAll('*')];
-    console.log(newDom, '.current', currentDom);
+    // console.log(newDom, '.current', currentDom);
     newDom.forEach((node, i) => {
-      if (
-        !node.isEqualNode(currentDom[i]) &&
-        node.firstChild.nodeValue.trim() != ''
-      ) {
-        currentDom[i].textContent = node.textContent;
+      let currentNode = currentDom[i];
+
+      // update changed text only
+      if (!node.isEqualNode(currentNode)) {
+        if (node.firstChild?.nodeValue.trim() != '') {
+          currentDom[i].textContent = node.textContent;
+        }
+
+        // update the data-goToServent attribute to make the sevent change on the acutal dom
+        if (true) {
+          [...node.attributes].forEach(att => {
+            currentNode.setAttribute(att.name, att.value);
+          });
+        }
       }
     });
   }

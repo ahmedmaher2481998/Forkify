@@ -537,12 +537,10 @@ let controlRecipes = async function() {
         if (!id) return;
         // spinner till loading is done
         _recipeviewJsDefault.default.renderSpinner();
+        // update result view to mark the selected recipe
+        _resultsviewJsDefault.default.update(_modelJs.getSearchResultPage());
         // loading recipe
         await _modelJs.loadRecipe(id);
-        // console.log('before', model.state.recipe.ingredients);
-        // // test
-        // controlServings();
-        // console.log(model.state.recipe.ingredients);
         // rendering the recipe
         _recipeviewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
@@ -567,7 +565,7 @@ const controlServings = function(newServings) {
     // Update the servings in the state
     _modelJs.updateServings(newServings);
     // Update the recipe View
-    _recipeviewJsDefault.default.updateRecipe(_modelJs.state.recipe);
+    _recipeviewJsDefault.default.update(_modelJs.state.recipe);
 };
 let init = function() {
     // publisher subscriber for view recipe
@@ -15461,10 +15459,8 @@ class View {
         let markup = this._generateMarkup();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
-    // stopped at 21.21 vid 18 devoloping dom update algo
     // Update the changed parts only just like react
-    updateRecipe(data) {
-        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+    update(data) {
         this._data = data;
         // virtual dom from the markup  and making a rray out of it
         let newDom = [
@@ -15474,9 +15470,18 @@ class View {
         let currentDom = [
             ...this._parentElement.querySelectorAll('*')
         ];
-        console.log(newDom, '.current', currentDom);
+        // console.log(newDom, '.current', currentDom);
         newDom.forEach((node, i)=>{
-            if (!node.isEqualNode(currentDom[i]) && node.firstChild.nodeValue.trim() != '') currentDom[i].textContent = node.textContent;
+            let currentNode = currentDom[i];
+            // update changed text only
+            if (!node.isEqualNode(currentNode)) {
+                if (node.firstChild?.nodeValue.trim() != '') currentDom[i].textContent = node.textContent;
+                [
+                    ...node.attributes
+                ].forEach((att)=>{
+                    currentNode.setAttribute(att.name, att.value);
+                });
+            }
         });
     }
     //   render a spinner to the parentElement
@@ -15547,9 +15552,10 @@ class ResultsView extends _viewJsDefault.default {
         return this._data.map(this._generateMarkupPreview).join('');
     }
     _generateMarkupPreview(result) {
+        let id = document.location.hash.slice(1);
         return `
         <li class="preview">
-            <a class="preview__link preview__link--active" href="#${result.id}">
+            <a class="preview__link ${result.id === id ? 'preview__link--active' : ''}" href="#${result.id}">
               <figure class="preview__fig">
                 <img src="${result.image_url}" alt="${result.title}" />
               </figure>
