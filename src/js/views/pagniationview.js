@@ -17,7 +17,6 @@ class PaginationView extends View {
     let page = this._data.page;
     // cases
     // page 1 and theres more
-    console.log(NumberOfPages);
     if (page === 1 && NumberOfPages > 1) {
       return this._generateMarkupButton('next');
     }

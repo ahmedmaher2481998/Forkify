@@ -2,11 +2,12 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime/runtime';
 import * as model from './model.js';
+// import bookmarkview from './views/bookmarkview.js';
 import pagniationview from './views/pagniationview.js';
 import RecipeView from './views/recipeview.js';
 import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
-
+import BookmarkView from './views/bookmarkview.js';
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
   module.hot.accept;
@@ -30,6 +31,8 @@ let controlRecipes = async function () {
 
     // rendering the recipe
     RecipeView.render(model.state.recipe);
+
+    BookmarkView.update(model.state.bookmark);
   } catch (err) {
     console.error(`${err} at controller `);
     RecipeView.renderError();
@@ -65,15 +68,23 @@ const controlServings = function (newServings) {
 
 //add book mark conyroler
 let contolerBookmark = () => {
+  //add/remove bookmarks
   if (!model.state.recipe.Bookmarked) {
     model.addBookmark(model.state.recipe);
   } else {
     model.removeBookmark(model.state.recipe.id);
   }
+  //update recipe view
   RecipeView.update(model.state.recipe);
-  console.log(model.state.bookmark);
+
+  //render bookmark
+  BookmarkView.render(model.state.bookmark);
 };
+
 let init = function () {
+  //retrive bookmarks from local storage ;
+  model.getBookmarks();
+  BookmarkView.render(model.state.bookmark);
   // publisher subscriber for view recipe
   RecipeView.addHandlerRender(controlRecipes);
 

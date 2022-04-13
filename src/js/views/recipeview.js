@@ -6,6 +6,7 @@ import { Fraction } from 'fractional';
 // impoerint the parent class
 import View from './view';
 import { isGeneratorFunction } from 'regenerator-runtime';
+
 //the main viwer class
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
@@ -32,10 +33,10 @@ class RecipeView extends View {
   addBookmarkHandler(handler) {
     this._parentElement.addEventListener('click', e => {
       let btn = e.target.closest('.btn--bookmark');
+      if (!btn) return;
       handler();
     });
   }
-
   //   generate recipie mark up
   _generateMarkup() {
     return ` 
