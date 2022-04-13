@@ -71,6 +71,20 @@ export let addBookmark = recipe => {
   storeBookmarks();
 };
 
+export const uploadRecipr = async function (newRecipe) {
+  let ingrediants = Object.entries(newRecipe).filter(ing => {
+    return ing[0].startsWith('ingredient') && ing[1] !== '';
+  });
+
+  ingrediants.map(ing => {
+    //[quantity, uint, type]
+    let a = ing[1].replaceAll(' ', '').split(',');
+    console.log(a);
+    return { quantity: quantity ? +quantity : null, uint, type };
+  });
+  console.log(ingrediants);
+};
+
 export let removeBookmark = id => {
   let index = state.bookmark.findIndex(e => e.id === id);
   state.bookmark.splice(index, 1);

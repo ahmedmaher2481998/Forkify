@@ -81,6 +81,10 @@ let contolerBookmark = () => {
   BookmarkView.render(model.state.bookmark);
 };
 
+//controler for add recipe
+let controlerAddRecipe = function (newRecipe) {
+  model.uploadRecipr(newRecipe);
+};
 let init = function () {
   //retrive bookmarks from local storage ;
   model.getBookmarks();
@@ -99,5 +103,8 @@ let init = function () {
 
   // publisher subscriber for Bookmark
   RecipeView.addBookmarkHandler(contolerBookmark);
+
+  // publisher subscriber for Addrecipe
+  AddRecipeView.addHandlerUpload(controlerAddRecipe);
 };
 init();

@@ -12,13 +12,21 @@ class AddRecipeView extends View {
   constructor() {
     super();
     this._addHandlerOpenWindow();
+    this._addHandlerCloseWindow();
   }
   toggleWindow() {
     this._window.classList.toggle('hidden');
     this._overlay.classList.toggle('hidden');
   }
+  addHandlerUpload(handler) {
+    let data = [...new FormData(this._parentElement)];
+    data = Object.fromEntries(data);
+    handler(data);
+  }
   _addHandlerOpenWindow() {
     this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+  }
+  _addHandlerCloseWindow() {
     this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
     this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }

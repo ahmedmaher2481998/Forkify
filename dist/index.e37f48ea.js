@@ -583,6 +583,10 @@ let contolerBookmark = ()=>{
     //render bookmark
     _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
 };
+//controler for add recipe
+let controlerAddRecipe = function(newRecipe) {
+    _modelJs.uploadRecipr(newRecipe);
+};
 let init = function() {
     //retrive bookmarks from local storage ;
     _modelJs.getBookmarks();
@@ -597,6 +601,8 @@ let init = function() {
     _recipeviewJsDefault.default.addServingsHandler(controlServings);
     // publisher subscriber for Bookmark
     _recipeviewJsDefault.default.addBookmarkHandler(contolerBookmark);
+    // publisher subscriber for Addrecipe
+    _addRecipeViewDefault.default.addHandlerUpload(controlerAddRecipe);
 };
 init();
 
@@ -2252,6 +2258,8 @@ parcelHelpers.export(exports, "getBookmarks", ()=>getBookmarks
 );
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
 );
+parcelHelpers.export(exports, "uploadRecipr", ()=>uploadRecipr
+);
 parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
 );
 var _regeneratorRuntime = require("regenerator-runtime");
@@ -2319,6 +2327,22 @@ let addBookmark = (recipe)=>{
         else recipe.Bookmarked;
     }
     storeBookmarks();
+};
+const uploadRecipr = async function(newRecipe) {
+    let ingrediants = Object.entries(newRecipe).filter((ing)=>{
+        return ing[0].startsWith('ingredient') && ing[1] !== '';
+    });
+    ingrediants.map((ing)=>{
+        //[quantity, uint, type]
+        let a = ing[1].replaceAll(' ', '').split(',');
+        console.log(a);
+        return {
+            quantity: quantity ? +quantity : null,
+            uint,
+            type
+        };
+    });
+    console.log(ingrediants);
 };
 let removeBookmark = (id)=>{
     let index = state.bookmark.findIndex((e)=>e.id === id
@@ -15743,13 +15767,23 @@ class AddRecipeView extends _viewJsDefault.default {
     constructor(){
         super();
         this._addHandlerOpenWindow();
+        this._addHandlerCloseWindow();
     }
     toggleWindow() {
         this._window.classList.toggle('hidden');
         this._overlay.classList.toggle('hidden');
     }
+    addHandlerUpload(handler) {
+        let data = [
+            ...new FormData(this._parentElement)
+        ];
+        data = Object.fromEntries(data);
+        handler(data);
+    }
     _addHandlerOpenWindow() {
         this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _addHandlerCloseWindow() {
         this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
         this._overlay.addEventListener('click', this.toggleWindow.bind(this));
     }
