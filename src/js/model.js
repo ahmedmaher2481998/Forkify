@@ -77,6 +77,7 @@ export const uploadRecipr = async function (newRecipe) {
   });
 
   ingrediants.map(ing => {
+    //formating ingredants
     //[quantity, uint,   type]
 
     let a = ing[1].replaceAll(' ', '').split(',');

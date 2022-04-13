@@ -2333,6 +2333,7 @@ const uploadRecipr = async function(newRecipe) {
         return ing[0].startsWith('ingredient') && ing[1] !== '';
     });
     ingrediants.map((ing)=>{
+        //formating ingredants
         //[quantity, uint,   type]
         let a = ing[1].replaceAll(' ', '').split(',');
         console.log(a);
