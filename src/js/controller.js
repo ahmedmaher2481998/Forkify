@@ -81,7 +81,7 @@ let contolerBookmark = () => {
   BookmarkView.render(model.state.bookmark);
 };
 
-//controler for add recipe
+//controler for add recipe by user
 let controlerAddRecipe = function (newRecipe) {
   model.uploadRecipr(newRecipe);
 };

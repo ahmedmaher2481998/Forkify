@@ -583,7 +583,7 @@ let contolerBookmark = ()=>{
     //render bookmark
     _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
 };
-//controler for add recipe
+//controler for add recipe by user
 let controlerAddRecipe = function(newRecipe) {
     _modelJs.uploadRecipr(newRecipe);
 };
