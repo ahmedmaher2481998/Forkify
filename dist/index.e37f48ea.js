@@ -2364,6 +2364,7 @@ const uploadRecipr = async function(newRecipe) {
         });
         //testing the right output
         console.log('this is engrediatn a ', ingrediants, newRecipe);
+        _helper.sendJson(`${API_UR}`);
         const recipe = {};
     } catch (error) {
         throw error;
