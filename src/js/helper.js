@@ -29,3 +29,28 @@ export const getJson = async url => {
     throw err;
   }
 };
+
+//sending json method to the api
+
+export const sendJson = async (url, data) => {
+  try {
+    // let rowData = await fetch(`${API_URL}${id}`);
+    let rowData = await Promise.race([
+      fetch(url, {
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }),
+      timeout2(TIMEOUT_SEC),
+    ]);
+    rowData = await rowData.json();
+    // erro handiling
+    if (rowData.status === 'fail')
+      throw new Error(`${rowData.message} ${rowData.status}`);
+    return rowData;
+  } catch (err) {
+    throw err;
+  }
+};

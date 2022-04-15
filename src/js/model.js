@@ -1,6 +1,6 @@
 import { async } from 'regenerator-runtime';
 import { API_URL, REC_PER_PAGE } from './config';
-import { getJson } from './helper';
+import { getJson, sendJson } from './helper';
 export let state = {
   recipe: {},
   search: {
@@ -70,21 +70,44 @@ export let addBookmark = recipe => {
   }
   storeBookmarks();
 };
-
+//upload user own recipe
 export const uploadRecipr = async function (newRecipe) {
-  let ingrediants = Object.entries(newRecipe).filter(ing => {
-    return ing[0].startsWith('ingredient') && ing[1] !== '';
-  });
+  try {
+    let ingrediants = Object.entries(newRecipe).filter(ing => {
+      return ing[0].startsWith('ingredient') && ing[1] !== '';
+    });
 
-  ingrediants.map(ing => {
-    //formating ingredants
-    //[quantity, uint,   type]
+    // newRecipe.forEach(ele => {
+    //   if (ing[0].startsWith('ingredient')) {
+    //     console.log(ing[0]);
+    //     delete newRecipe[ing[0]];
+    //   }
+    // });
+    // must be quntity , unit , dec
+    ingrediants = ingrediants.map(ing => {
+      //formating ingredants
+      let ingArry = ing[1].replaceAll(' ', '').split(',');
+      if (ingArry.length !== 3) throw new Error('Wrong Ingrediant format !!');
+      let [quantity, unit, description] = ingArry;
+      return { quantity: quantity ? +quantity : null, unit, description };
+    });
 
-    let a = ing[1].replaceAll(' ', '').split(',');
-    console.log(a);
-    return { quantity: quantity ? +quantity : null, uint, type };
-  });
-  console.log(ingrediants);
+    //setting the ingrediants array equal to the ingridants proprty
+    newRecipe.ingrediants = ingrediants;
+
+    //removing ingrediants-number fields from the new recipe object
+    Object.entries(newRecipe).map(elem => {
+      if (elem[0].startsWith('ingredient')) {
+        delete newRecipe[elem[0]];
+      }
+    });
+    //testing the right output
+    console.log('this is engrediatn a ', ingrediants, newRecipe);
+    sendJson(`${API_UR}`);
+    const recipe = {};
+  } catch (error) {
+    throw error;
+  }
 };
 
 export let removeBookmark = id => {
