@@ -16,6 +16,7 @@ const timeout2 = function (s) {
     }, s * 1000);
   });
 };
+
 export const getJson = async url => {
   try {
     // let rowData = await fetch(`${API_URL}${id}`);
@@ -34,23 +35,23 @@ export const getJson = async url => {
 
 export const sendJson = async (url, data) => {
   try {
-    data = {
+    newRecipe = {
       cooking_time: data.cooking_time,
       servings: data.servings,
       image_url: data.image_url,
-      ingredients: data.ingrediants,
+      ingredients: data.ingredients,
       source_url: data.source_url,
       publisher: data.publisher,
       title: data.title,
     };
-    console.log(data);
+    // console.log(data);
     let rowData = await Promise.race([
       fetch(url, {
         method: 'POST',
-        header: {
+        headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(newRecipe),
       }),
       timeout2(TIMEOUT_SEC),
     ]);

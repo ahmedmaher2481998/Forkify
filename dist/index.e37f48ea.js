@@ -530,6 +530,7 @@ var _searchviewJs = require("./views/searchview.js");
 var _searchviewJsDefault = parcelHelpers.interopDefault(_searchviewJs);
 var _bookmarkviewJs = require("./views/bookmarkview.js");
 var _bookmarkviewJsDefault = parcelHelpers.interopDefault(_bookmarkviewJs);
+// import addRecipeView from './views/addRecipeView';
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) module.hot.accept;
 // https://forkify-api.herokuapp.com/v2
@@ -585,8 +586,9 @@ let contolerBookmark = ()=>{
 };
 //controler for add recipe by user
 let controlerAddRecipe = async function(newRecipe) {
-    console.log('do it');
     try {
+        console.log('do it');
+        //uploading the recipe
         await _modelJs.uploadRecipr(newRecipe);
     } catch (error) {
         console.error(error);
@@ -2352,14 +2354,14 @@ const uploadRecipr = async function(newRecipe) {
                 description
             };
         });
-        //testing the right output
-        console.log(ingredient);
         //removing ingredients-number fields from the new recipe object
         Object.entries(newRecipe).map((elem)=>{
             if (elem[0].startsWith('ingredient')) delete newRecipe[elem[0]];
         });
         //setting the ingredients array equal to the ingridants proprty
-        newRecipe.ingredients = ingredients;
+        newRecipe.ingredients = {
+            ...ingredients
+        };
         // console.log(newRecipe);
         newRecipe.key = _config.API_KEY;
         let data = await _helper.sendJson(`${_config.API_URL}?key=${_config.API_KEY}`, newRecipe);
@@ -2440,23 +2442,23 @@ const getJson = async (url)=>{
 };
 const sendJson = async (url, data)=>{
     try {
-        data = {
+        newRecipe = {
             cooking_time: data.cooking_time,
             servings: data.servings,
             image_url: data.image_url,
-            ingredients: data.ingrediants,
+            ingredients: data.ingredients,
             source_url: data.source_url,
             publisher: data.publisher,
             title: data.title
         };
-        console.log(data);
+        // console.log(data);
         let rowData = await Promise.race([
             fetch(url, {
                 method: 'POST',
-                header: {
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(newRecipe)
             }),
             timeout2(_config.TIMEOUT_SEC), 
         ]);
@@ -15814,6 +15816,7 @@ var _viewJs = require("./view.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 var _iconsSvg = require("url:../../../src/img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _controller = require("../controller");
 class AddRecipeView extends _viewJsDefault.default {
     //selecting needed elements
     _parentElement = document.querySelector('.upload');
@@ -15834,9 +15837,9 @@ class AddRecipeView extends _viewJsDefault.default {
         this._overlay.classList.toggle('hidden');
     }
     //getting data from form amd passing tho handler funiction
-    addHandlerUpload(handler1) {
-        this._parentElement.addEventListener('submit', (handler)=>{
-            console.log(handler);
+    addHandlerUpload(handler) {
+        this._parentElement.addEventListener('submit', (e)=>{
+            console.log('handler');
             let data = [
                 ...new FormData(this._parentElement)
             ];
@@ -15856,7 +15859,7 @@ class AddRecipeView extends _viewJsDefault.default {
 }
 exports.default = new AddRecipeView();
 
-},{"./view.js":"bWlJ9","url:../../../src/img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hy89N":[function(require,module,exports) {
+},{"./view.js":"bWlJ9","url:../../../src/img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../controller":"aenu9"}],"hy89N":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _viewJs = require("./view.js");

@@ -8,7 +8,7 @@ import RecipeView from './views/recipeview.js';
 import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
 import BookmarkView from './views/bookmarkview.js';
-import addRecipeView from './views/addRecipeView';
+// import addRecipeView from './views/addRecipeView';
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
   module.hot.accept;
@@ -84,12 +84,14 @@ let contolerBookmark = () => {
 
 //controler for add recipe by user
 let controlerAddRecipe = async function (newRecipe) {
-  console.log('do it');
   try {
+    console.log('do it');
+
+    //uploading the recipe
     await model.uploadRecipr(newRecipe);
   } catch (error) {
     console.error(error);
-    addRecipeView.renderError(error.message);
+    AddRecipeView.renderError(error.message);
   }
 };
 let init = function () {

@@ -86,8 +86,6 @@ export const uploadRecipr = async function (newRecipe) {
       let [quantity, unit, description] = ingArry;
       return { quantity: quantity ? +quantity : null, unit, description };
     });
-    //testing the right output
-    console.log(ingredient);
 
     //removing ingredients-number fields from the new recipe object
     Object.entries(newRecipe).map(elem => {
@@ -96,7 +94,7 @@ export const uploadRecipr = async function (newRecipe) {
       }
     });
     //setting the ingredients array equal to the ingridants proprty
-    newRecipe.ingredients = ingredients;
+    newRecipe.ingredients = { ...ingredients };
 
     // console.log(newRecipe);
     newRecipe.key = API_KEY;
