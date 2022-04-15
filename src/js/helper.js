@@ -34,7 +34,16 @@ export const getJson = async url => {
 
 export const sendJson = async (url, data) => {
   try {
-    // let rowData = await fetch(`${API_URL}${id}`);
+    data = {
+      cooking_time: data.cooking_time,
+      servings: data.servings,
+      image_url: data.image_url,
+      ingredients: data.ingrediants,
+      source_url: data.source_url,
+      publisher: data.publisher,
+      title: data.title,
+    };
+    console.log(data);
     let rowData = await Promise.race([
       fetch(url, {
         method: 'POST',

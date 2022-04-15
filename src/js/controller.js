@@ -84,6 +84,7 @@ let contolerBookmark = () => {
 
 //controler for add recipe by user
 let controlerAddRecipe = async function (newRecipe) {
+  console.log('do it');
   try {
     await model.uploadRecipr(newRecipe);
   } catch (error) {
