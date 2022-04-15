@@ -1,6 +1,6 @@
 import { async } from 'regenerator-runtime';
-import { API_URL, REC_PER_PAGE } from './config';
-import { getJson } from './helper';
+import { API_KEY, API_URL, REC_PER_PAGE } from './config';
+import { getJson, sendJson } from './helper';
 export let state = {
   recipe: {},
   search: {
@@ -69,6 +69,42 @@ export let addBookmark = recipe => {
     }
   }
   storeBookmarks();
+};
+//upload user own recipe
+export const uploadRecipr = async function (newRecipe) {
+  try {
+    //making ingrediant and arry , thne formatting it
+    let ingredients = Object.entries(newRecipe).filter(ing => {
+      return ing[0].startsWith('ingredient') && ing[1] !== '';
+    });
+
+    // must be quntity , unit , dec
+    ingredients = ingredients.map(ing => {
+      //formating ingredants
+      let ingArry = ing[1].replaceAll(' ', '').split(',');
+      if (ingArry.length !== 3) throw new Error('Wrong Ingrediant format !!');
+      let [quantity, unit, description] = ingArry;
+      return { quantity: quantity ? +quantity : null, unit, description };
+    });
+    //testing the right output
+    console.log(ingredient);
+
+    //removing ingredients-number fields from the new recipe object
+    Object.entries(newRecipe).map(elem => {
+      if (elem[0].startsWith('ingredient')) {
+        delete newRecipe[elem[0]];
+      }
+    });
+    //setting the ingredients array equal to the ingridants proprty
+    newRecipe.ingredients = ingredients;
+
+    // console.log(newRecipe);
+    newRecipe.key = API_KEY;
+    let data = await sendJson(`${API_URL}?key=${API_KEY}`, newRecipe);
+    console.log(data);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export let removeBookmark = id => {

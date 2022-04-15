@@ -29,3 +29,37 @@ export const getJson = async url => {
     throw err;
   }
 };
+
+//sending json method to the api
+
+export const sendJson = async (url, data) => {
+  try {
+    data = {
+      cooking_time: data.cooking_time,
+      servings: data.servings,
+      image_url: data.image_url,
+      ingredients: data.ingrediants,
+      source_url: data.source_url,
+      publisher: data.publisher,
+      title: data.title,
+    };
+    console.log(data);
+    let rowData = await Promise.race([
+      fetch(url, {
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }),
+      timeout2(TIMEOUT_SEC),
+    ]);
+    rowData = await rowData.json();
+    // erro handiling
+    if (rowData.status === 'fail')
+      throw new Error(`${rowData.message} ${rowData.status}`);
+    return rowData;
+  } catch (err) {
+    throw err;
+  }
+};

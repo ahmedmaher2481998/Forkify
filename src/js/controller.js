@@ -2,12 +2,13 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime/runtime';
 import * as model from './model.js';
-// import bookmarkview from './views/bookmarkview.js';
+import AddRecipeView from './views/addRecipeView';
 import pagniationview from './views/pagniationview.js';
 import RecipeView from './views/recipeview.js';
 import ResultView from './views/resultsview.js';
 import searchview from './views/searchview.js';
 import BookmarkView from './views/bookmarkview.js';
+import addRecipeView from './views/addRecipeView';
 const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
   module.hot.accept;
@@ -81,6 +82,16 @@ let contolerBookmark = () => {
   BookmarkView.render(model.state.bookmark);
 };
 
+//controler for add recipe by user
+let controlerAddRecipe = async function (newRecipe) {
+  console.log('do it');
+  try {
+    await model.uploadRecipr(newRecipe);
+  } catch (error) {
+    console.error(error);
+    addRecipeView.renderError(error.message);
+  }
+};
 let init = function () {
   //retrive bookmarks from local storage ;
   model.getBookmarks();
@@ -99,5 +110,8 @@ let init = function () {
 
   // publisher subscriber for Bookmark
   RecipeView.addBookmarkHandler(contolerBookmark);
+
+  // publisher subscriber for Addrecipe
+  AddRecipeView.addHandlerUpload(controlerAddRecipe);
 };
 init();
