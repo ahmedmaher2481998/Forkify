@@ -101,10 +101,10 @@ export const uploadRecipr = async function (newRecipe) {
     newRecipe.ingredients = ingredients;
 
     // console.log(newRecipe);
-    newRecipe.key = API_KEY;
     let data = await sendJson(`${API_URL}?key=${API_KEY}`, newRecipe);
 
     state.recipe = data.data.recipe;
+    newRecipe.key = API_KEY;
     addBookmark(state.recipe);
     console.log('data', state.recipe);
   } catch (error) {
@@ -122,4 +122,4 @@ let clearBookmark = function () {
   localStorage.clear('bookmark');
   console.log('bookmarks cleared from local storage ');
 };
-// clearBookmark();
+clearBookmark();

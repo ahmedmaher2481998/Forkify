@@ -588,14 +588,16 @@ let contolerBookmark = ()=>{
 //controler for add recipe by user
 let controlerAddRecipe = async function(newRecipe) {
     try {
+        _addRecipeViewDefault.default.renderSpinner();
         //uploading the recipe
         await _modelJs.uploadRecipr(newRecipe);
         //render spinner + render recipe and put it as bookmarked
-        _addRecipeViewDefault.default.renderSpinner();
+        _recipeviewJsDefault.default.render(_modelJs.state.recipe);
+        //show msg
+        _addRecipeViewDefault.default.rendermessage();
+        //close window
         setTimeout(()=>{
-            _addRecipeViewDefault.default.rendermessage();
             _addRecipeViewDefault.default.toggleWindow();
-            _addRecipeViewDefault.default.render(_modelJs.state.recipe);
         }, _configJs.WINDOW_CLOSE * 1000);
     } catch (error) {
         console.error(error);
@@ -2368,9 +2370,9 @@ const uploadRecipr = async function(newRecipe) {
         //setting the ingredients array equal to the ingridants proprty
         newRecipe.ingredients = ingredients;
         // console.log(newRecipe);
-        newRecipe.key = _config.API_KEY;
         let data = await _helper.sendJson(`${_config.API_URL}?key=${_config.API_KEY}`, newRecipe);
         state.recipe = data.data.recipe;
+        newRecipe.key = _config.API_KEY;
         addBookmark(state.recipe);
         console.log('data', state.recipe);
     } catch (error) {
@@ -2387,7 +2389,8 @@ let removeBookmark = (id)=>{
 let clearBookmark = function() {
     localStorage.clear('bookmark');
     console.log('bookmarks cleared from local storage ');
-}; // clearBookmark();
+};
+clearBookmark();
 
 },{"regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helper":"lVRAz"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

@@ -86,14 +86,16 @@ let contolerBookmark = () => {
 //controler for add recipe by user
 let controlerAddRecipe = async function (newRecipe) {
   try {
+    AddRecipeView.renderSpinner();
     //uploading the recipe
     await model.uploadRecipr(newRecipe);
     //render spinner + render recipe and put it as bookmarked
-    AddRecipeView.renderSpinner();
+    RecipeView.render(model.state.recipe);
+    //show msg
+    AddRecipeView.rendermessage();
+    //close window
     setTimeout(() => {
-      AddRecipeView.rendermessage();
       AddRecipeView.toggleWindow();
-      AddRecipeView.render(model.state.recipe);
     }, WINDOW_CLOSE * 1000);
   } catch (error) {
     console.error(error);
