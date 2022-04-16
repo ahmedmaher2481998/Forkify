@@ -89,12 +89,14 @@ let controlerAddRecipe = async function (newRecipe) {
     AddRecipeView.renderSpinner();
     //uploading the recipe
     await model.uploadRecipr(newRecipe);
-    //render spinner + render recipe and put it as bookmarked
-    RecipeView.render(model.state.recipe);
     //show msg
     AddRecipeView.rendermessage();
-    //close window
+    //render spinner + render recipe and put it as bookmarked
+    RecipeView.render(model.state.recipe);
+    BookmarkView.render(model.state.bookmark);
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
     setTimeout(() => {
+      //close window
       AddRecipeView.toggleWindow();
     }, WINDOW_CLOSE * 1000);
   } catch (error) {

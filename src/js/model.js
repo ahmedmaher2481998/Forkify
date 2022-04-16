@@ -1,6 +1,6 @@
 import { async } from 'regenerator-runtime';
 import { API_KEY, API_URL, REC_PER_PAGE } from './config';
-import { getJson, sendJson } from './helper';
+import { AJAX } from './helper';
 export let state = {
   recipe: {},
   search: {
@@ -12,7 +12,7 @@ export let state = {
 };
 export async function loadRecipe(id) {
   try {
-    rowData = await getJson(`${API_URL}${id}`);
+    rowData = await AJAX(`${API_URL}${id}?key=${API_KEY}`);
     let { data } = rowData;
     // console.log(data);
     state.recipe = { ...data.recipe };
@@ -28,8 +28,13 @@ export async function loadRecipe(id) {
 export const loadSearchResult = async query => {
   try {
     state.search.query = query;
-    let data = await getJson(`${API_URL}?search=${query}`);
-    state.search.results = data.data.recipes.map(rec => rec);
+    let data = await AJAX(`${API_URL}?search=${query}&?key=${API_KEY}`);
+    state.search.results = data.data.recipes.map(rec => {
+      // if (!rec.key) {
+      //   rec.key = API_KEY;
+      // }
+      return rec;
+    });
   } catch (error) {
     console.log(error);
     throw error;
@@ -101,12 +106,11 @@ export const uploadRecipr = async function (newRecipe) {
     newRecipe.ingredients = ingredients;
 
     // console.log(newRecipe);
-    let data = await sendJson(`${API_URL}?key=${API_KEY}`, newRecipe);
-
+    let data = await AJAX(`${API_URL}?key=${API_KEY}`, newRecipe);
+    console.log(data);
     state.recipe = data.data.recipe;
     newRecipe.key = API_KEY;
     addBookmark(state.recipe);
-    console.log('data', state.recipe);
   } catch (error) {
     throw error;
   }
@@ -122,4 +126,4 @@ let clearBookmark = function () {
   localStorage.clear('bookmark');
   console.log('bookmarks cleared from local storage ');
 };
-clearBookmark();
+// clearBookmark();
