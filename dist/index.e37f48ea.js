@@ -591,12 +591,14 @@ let controlerAddRecipe = async function(newRecipe) {
         _addRecipeViewDefault.default.renderSpinner();
         //uploading the recipe
         await _modelJs.uploadRecipr(newRecipe);
-        //render spinner + render recipe and put it as bookmarked
-        _recipeviewJsDefault.default.render(_modelJs.state.recipe);
         //show msg
         _addRecipeViewDefault.default.rendermessage();
-        //close window
+        //render spinner + render recipe and put it as bookmarked
+        _recipeviewJsDefault.default.render(_modelJs.state.recipe);
+        _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
+        window.history.pushState(null, '', `#${_modelJs.state.recipe.id}`);
         setTimeout(()=>{
+            //close window
             _addRecipeViewDefault.default.toggleWindow();
         }, _configJs.WINDOW_CLOSE * 1000);
     } catch (error) {
@@ -2293,7 +2295,7 @@ let state = {
 };
 async function loadRecipe(id) {
     try {
-        rowData = await _helper.getJson(`${_config.API_URL}${id}`);
+        rowData = await _helper.AJAX(`${_config.API_URL}${id}?key=${_config.API_KEY}`);
         let { data  } = rowData;
         // console.log(data);
         state.recipe = {
@@ -2309,9 +2311,13 @@ async function loadRecipe(id) {
 const loadSearchResult = async (query)=>{
     try {
         state.search.query = query;
-        let data = await _helper.getJson(`${_config.API_URL}?search=${query}`);
-        state.search.results = data.data.recipes.map((rec)=>rec
-        );
+        let data = await _helper.AJAX(`${_config.API_URL}?search=${query}&?key=${_config.API_KEY}`);
+        state.search.results = data.data.recipes.map((rec)=>{
+            // if (!rec.key) {
+            //   rec.key = API_KEY;
+            // }
+            return rec;
+        });
     } catch (error) {
         console.log(error);
         throw error;
@@ -2370,11 +2376,11 @@ const uploadRecipr = async function(newRecipe) {
         //setting the ingredients array equal to the ingridants proprty
         newRecipe.ingredients = ingredients;
         // console.log(newRecipe);
-        let data = await _helper.sendJson(`${_config.API_URL}?key=${_config.API_KEY}`, newRecipe);
+        let data = await _helper.AJAX(`${_config.API_URL}?key=${_config.API_KEY}`, newRecipe);
+        console.log(data);
         state.recipe = data.data.recipe;
         newRecipe.key = _config.API_KEY;
         addBookmark(state.recipe);
-        console.log('data', state.recipe);
     } catch (error) {
         throw error;
     }
@@ -2389,8 +2395,7 @@ let removeBookmark = (id)=>{
 let clearBookmark = function() {
     localStorage.clear('bookmark');
     console.log('bookmarks cleared from local storage ');
-};
-clearBookmark();
+}; // clearBookmark();
 
 },{"regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helper":"lVRAz"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2414,11 +2419,10 @@ const WINDOW_CLOSE = 2.5;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lVRAz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getJson", ()=>getJson
-);
-parcelHelpers.export(exports, "sendJson", ()=>sendJson
+parcelHelpers.export(exports, "AJAX", ()=>AJAX
 );
 var _stable = require("core-js/stable");
+var _regeneratorRuntime = require("regenerator-runtime");
 var _config = require("./config");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -2435,24 +2439,11 @@ const timeout2 = function(s) {
         }, s * 1000);
     });
 };
-const getJson = async (url)=>{
+const AJAX = async function(url, data) {
     try {
-        // let rowData = await fetch(`${API_URL}${id}`);
-        let rowData = await Promise.race([
-            fetch(url),
-            timeout2(_config.TIMEOUT_SEC)
-        ]);
-        rowData = await rowData.json();
-        // erro handiling
-        if (rowData.status === 'fail') throw new Error(`${rowData.message} ${rowData.status}`);
-        return rowData;
-    } catch (err) {
-        throw err;
-    }
-};
-const sendJson = async (url, data)=>{
-    try {
-        newRecipe = {
+        //organizing data
+        let newRecipe;
+        if (data) newRecipe = {
             publisher: data.publisher,
             ingredients: data.ingredients,
             source_url: data.source_url,
@@ -2461,14 +2452,14 @@ const sendJson = async (url, data)=>{
             servings: +data.servings,
             cooking_time: +data.cooking_time
         };
-        console.log(newRecipe);
-        let fetchpro = fetch(url, {
+        let fetchpro = data ? fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(newRecipe)
-        });
+        }) : fetch(url);
+        // console.log(newRecipe);
         let rowData = await Promise.race([
             fetchpro,
             timeout2(_config.TIMEOUT_SEC)
@@ -2480,9 +2471,27 @@ const sendJson = async (url, data)=>{
     } catch (err) {
         throw err;
     }
+}; /*
+export const getJson = async url => {
+  try {
+    // let rowData = await fetch(`${API_URL}${id}`);
+    let rowData = await Promise.race([, timeout2(TIMEOUT_SEC)]);
+    rowData = await rowData.json();
+    // erro handiling
+    if (rowData.status === 'fail')
+      throw new Error(`${rowData.message} ${rowData.status}`);
+    return rowData;
+  } catch (err) {
+    throw err;
+  }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","core-js/stable":"7CRIE"}],"7CRIE":[function(require,module,exports) {
+//sending json method to the api
+
+export const sendJson = async (url, data) => {};
+*/ 
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","core-js/stable":"7CRIE","regenerator-runtime":"dXNgZ"}],"7CRIE":[function(require,module,exports) {
 require('../modules/es.symbol');
 require('../modules/es.symbol.description');
 require('../modules/es.symbol.async-iterator');
@@ -15261,10 +15270,10 @@ class RecipeView extends _viewDefault.default {
               </button>
             </div>
           </div>
-          <div class="recipe__user-generated">
-            <!-- <svg>
-              <use href="${_iconsSvgDefault.default}.svg#icon-user"></use>
-            </svg>-->
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${_iconsSvgDefault.default}#icon-user"></use>
+            </svg>
           </div>
           <button class="btn--round btn--bookmark">
             <svg class="">
@@ -15750,9 +15759,10 @@ class Preview extends _viewJsDefault.default {
               <div class="preview__data">
                 <h4 class="preview__title">${result.title}</h4>
                 <p class="preview__publisher">${result.publisher}</p>
-                <div class="preview__user-generated">
+                </div>
+                <div class="recipe__user-generated ${result.key ? '' : 'hidden'}">
                   <svg>
-                    <use href="${_iconsSvgDefault.default}#icon-user"></use>
+                      <use href="${_iconsSvgDefault.default}#icon-user"></use>
                   </svg>
                 </div>
               </div>
