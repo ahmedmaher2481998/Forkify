@@ -84,7 +84,11 @@ export const uploadRecipr = async function (newRecipe) {
       let ingArry = ing[1].replaceAll(' ', '').split(',');
       if (ingArry.length !== 3) throw new Error('Wrong Ingrediant format !!');
       let [quantity, unit, description] = ingArry;
-      return { quantity: quantity ? +quantity : null, unit, description };
+      return {
+        quantity: quantity ? +quantity : null,
+        unit: unit,
+        description: description,
+      };
     });
 
     //removing ingredients-number fields from the new recipe object
@@ -94,17 +98,19 @@ export const uploadRecipr = async function (newRecipe) {
       }
     });
     //setting the ingredients array equal to the ingridants proprty
-    newRecipe.ingredients = { ...ingredients };
+    newRecipe.ingredients = ingredients;
 
     // console.log(newRecipe);
     newRecipe.key = API_KEY;
     let data = await sendJson(`${API_URL}?key=${API_KEY}`, newRecipe);
-    console.log(data);
+
+    state.recipe = data.data.recipe;
+    addBookmark(state.recipe);
+    console.log('data', state.recipe);
   } catch (error) {
     throw error;
   }
 };
-
 export let removeBookmark = id => {
   let index = state.bookmark.findIndex(e => e.id === id);
   state.bookmark.splice(index, 1);

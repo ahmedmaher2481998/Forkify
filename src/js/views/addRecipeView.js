@@ -9,7 +9,7 @@ class AddRecipeView extends View {
   _window = document.querySelector('.add-recipe-window');
   _btnOpen = document.querySelector('.nav__btn--add-recipe');
   _btnClose = document.querySelector('.btn--close-modal');
-
+  _msg = 'Recipe is added sucessfully :)';
   //calling funictions
   constructor() {
     super();
@@ -26,6 +26,7 @@ class AddRecipeView extends View {
   //getting data from form amd passing tho handler funiction
   addHandlerUpload(handler) {
     this._parentElement.addEventListener('submit', e => {
+      e.preventDefault();
       console.log('handler');
       let data = [...new FormData(this._parentElement)];
       data = Object.fromEntries(data);
