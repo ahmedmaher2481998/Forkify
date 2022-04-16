@@ -86,6 +86,7 @@ let contolerBookmark = () => {
 //controler for add recipe by user
 let controlerAddRecipe = async function (newRecipe) {
   try {
+    // debugger;
     AddRecipeView.renderSpinner();
     //uploading the recipe
     await model.uploadRecipr(newRecipe);
