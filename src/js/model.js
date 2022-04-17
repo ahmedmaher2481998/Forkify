@@ -29,6 +29,7 @@ export const loadSearchResult = async query => {
   try {
     state.search.query = query;
     let data = await AJAX(`${API_URL}?search=${query}&?key=${API_KEY}`);
+    console.log('Start...', data, `${API_URL}?search=${query}&?key=${API_KEY}`);
     state.search.results = data.data.recipes.map(rec => {
       // if (!rec.key) {
       //   rec.key = API_KEY;
@@ -107,7 +108,7 @@ export const uploadRecipr = async function (newRecipe) {
 
     // console.log(newRecipe);
     let data = await AJAX(`${API_URL}?key=${API_KEY}`, newRecipe);
-    console.log(data);
+    // console.log(data);
     state.recipe = data.data.recipe;
     newRecipe.key = API_KEY;
     addBookmark(state.recipe);

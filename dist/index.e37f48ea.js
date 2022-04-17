@@ -592,6 +592,7 @@ let controlerAddRecipe = async function(newRecipe) {
         //uploading the recipe
         await _modelJs.uploadRecipr(newRecipe);
         //show msg
+        // debugger;
         _addRecipeViewDefault.default.rendermessage();
         //render spinner + render recipe and put it as bookmarked
         _recipeviewJsDefault.default.render(_modelJs.state.recipe);
@@ -2312,6 +2313,7 @@ const loadSearchResult = async (query)=>{
     try {
         state.search.query = query;
         let data = await _helper.AJAX(`${_config.API_URL}?search=${query}&?key=${_config.API_KEY}`);
+        console.log('Start...', data, `${_config.API_URL}?search=${query}&?key=${_config.API_KEY}`);
         state.search.results = data.data.recipes.map((rec)=>{
             // if (!rec.key) {
             //   rec.key = API_KEY;
@@ -2377,7 +2379,7 @@ const uploadRecipr = async function(newRecipe) {
         newRecipe.ingredients = ingredients;
         // console.log(newRecipe);
         let data = await _helper.AJAX(`${_config.API_URL}?key=${_config.API_KEY}`, newRecipe);
-        console.log(data);
+        // console.log(data);
         state.recipe = data.data.recipe;
         newRecipe.key = _config.API_KEY;
         addBookmark(state.recipe);
@@ -15862,7 +15864,6 @@ class AddRecipeView extends _viewJsDefault.default {
     addHandlerUpload(handler) {
         this._parentElement.addEventListener('submit', (e)=>{
             e.preventDefault();
-            console.log('handler');
             let data = [
                 ...new FormData(this._parentElement)
             ];

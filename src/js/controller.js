@@ -90,6 +90,7 @@ let controlerAddRecipe = async function (newRecipe) {
     //uploading the recipe
     await model.uploadRecipr(newRecipe);
     //show msg
+    // debugger;
     AddRecipeView.rendermessage();
     //render spinner + render recipe and put it as bookmarked
     RecipeView.render(model.state.recipe);

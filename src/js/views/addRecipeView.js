@@ -27,13 +27,11 @@ class AddRecipeView extends View {
   addHandlerUpload(handler) {
     this._parentElement.addEventListener('submit', e => {
       e.preventDefault();
-      console.log('handler');
       let data = [...new FormData(this._parentElement)];
       data = Object.fromEntries(data);
       handler(data);
     });
   }
-
   //open the window on clicking
   _addHandlerOpenWindow() {
     this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
