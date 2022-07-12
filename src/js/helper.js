@@ -13,7 +13,6 @@ const timeout2 = function (s) {
   return new Promise((_, reject) => {
     setTimeout(function () {
       reject(new Error(`request took too long! Time Out After ${s} seconds `));
-      // console.log(s);
     }, s * 1000);
   });
 };
@@ -45,7 +44,6 @@ export const AJAX = async function (url, data = undefined) {
         })
       : fetch(url);
 
-    // console.log(newRecipe);
     let rowData = await Promise.race([fetchpro, timeout2(TIMEOUT_SEC)]);
     rowData = await rowData.json();
     // erro handiling

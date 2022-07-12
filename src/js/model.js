@@ -14,7 +14,7 @@ export async function loadRecipe(id) {
   try {
     rowData = await AJAX(`${API_URL}${id}?key=${API_KEY}`);
     let { data } = rowData;
-    // console.log(data);
+
     state.recipe = { ...data.recipe };
     if (state.bookmark.some(e => e.id === id)) {
       state.recipe.Bookmarked = true;
@@ -36,7 +36,7 @@ export const loadSearchResult = async query => {
       return rec;
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -65,7 +65,6 @@ export const getBookmarks = function () {
 };
 
 export let addBookmark = recipe => {
-  // if (state.bookmark.includes(recipe)) console.log('exists');
   if (recipe.id === state.recipe.id) {
     recipe.Bookmarked = true;
     if (recipe.Bookmarked) {
@@ -105,9 +104,8 @@ export const uploadRecipr = async function (newRecipe) {
     //setting the ingredients array equal to the ingridants proprty
     newRecipe.ingredients = ingredients;
 
-    // console.log(newRecipe);
     let data = await AJAX(`${API_URL}?key=${API_KEY}`, newRecipe);
-    console.log(data);
+
     state.recipe = data.data.recipe;
     newRecipe.key = API_KEY;
     addBookmark(state.recipe);
@@ -124,6 +122,5 @@ export let removeBookmark = id => {
 
 let clearBookmark = function () {
   localStorage.clear('bookmark');
-  console.log('bookmarks cleared from local storage ');
 };
 // clearBookmark();

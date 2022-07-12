@@ -3,6 +3,16 @@ import icons from 'url:../../../src/img/icons.svg';
 export default class View {
   _data;
   _msg;
+  /**
+   *
+   * Render The recived object to the dom
+   * @param{Object | Object[]} data the data to be rendered {e.g recpie }
+   * @param {boolean} {render = true } if false ,create markup string instead of rendering to the dom
+   * @return {undefined | string } a markup string if render is false
+   * @this {Object} View instance
+   * @author ahmed maher
+   * @todo fix the post request error when uploading the recpie
+   */
   //rendering data to the usable format
   render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -26,7 +36,7 @@ export default class View {
     ];
     // the exisiting dom and making a rray out of it
     let currentDom = [...this._parentElement.querySelectorAll('*')];
-    // console.log(newDom, '.current', currentDom);
+
     newDom.forEach((node, i) => {
       let currentNode = currentDom[i];
 
