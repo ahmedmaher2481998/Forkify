@@ -1,10 +1,5 @@
-# jsProject
+# Forkify Project
 
-the js project
-improve chanllane accepted
-\*\* num of pages between two pagination buttons
-\*\*add the a bility sort by duraction
-\*\*
-\*\*
-\*\*
-\*\*
+a recipe search web app made using pur js , parcel and sass
+it has many features and it was made as a part of the jhons schimedit js course
+live : https://forkiky-a-maher.netlify.app/
