@@ -609,6 +609,7 @@ let controlerAddRecipe = async function(newRecipe) {
 };
 let init = function() {
     //retrive bookmarks from local storage ;
+    console.log('object');
     _modelJs.getBookmarks();
     _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
     // publisher subscriber for view recipe

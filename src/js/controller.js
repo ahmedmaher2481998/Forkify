@@ -107,6 +107,7 @@ let controlerAddRecipe = async function (newRecipe) {
 };
 let init = function () {
   //retrive bookmarks from local storage ;
+  console.log('object');
   model.getBookmarks();
   BookmarkView.render(model.state.bookmark);
   // publisher subscriber for view recipe
