@@ -9,8 +9,8 @@ class AddRecipeView extends View {
   _window = document.querySelector('.add-recipe-window');
   _btnOpen = document.querySelector('.nav__btn--add-recipe');
   _btnClose = document.querySelector('.btn--close-modal');
-  _msg = 'Recipe is added sucessfully :)';
-  //calling funictions
+  _msg = 'Recipe is added successfully :)';
+  //calling functions
   constructor() {
     super();
     this._addHandlerOpenWindow();
@@ -23,7 +23,7 @@ class AddRecipeView extends View {
     this._overlay.classList.toggle('hidden');
   }
 
-  //getting data from form amd passing tho handler funiction
+  //getting data from form amd passing tho handler function
   addHandlerUpload(handler) {
     this._parentElement.addEventListener('submit', e => {
       e.preventDefault();

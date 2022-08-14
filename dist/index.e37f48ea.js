@@ -575,7 +575,7 @@ const controlServings = function(newServings) {
     // Update the recipe View
     _recipeviewJsDefault.default.update(_modelJs.state.recipe);
 };
-//add book mark conyroler
+//add book mark controller
 let contolerBookmark = ()=>{
     //add/remove bookmarks
     if (!_modelJs.state.recipe.Bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
@@ -585,7 +585,7 @@ let contolerBookmark = ()=>{
     //render bookmark
     _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
 };
-//controler for add recipe by user
+//controller for add recipe by user
 let controlerAddRecipe = async function(newRecipe) {
     try {
         // debugger;
@@ -609,14 +609,13 @@ let controlerAddRecipe = async function(newRecipe) {
 };
 let init = function() {
     //retrive bookmarks from local storage ;
-    console.log('object');
     _modelJs.getBookmarks();
     _bookmarkviewJsDefault.default.render(_modelJs.state.bookmark);
     // publisher subscriber for view recipe
     _recipeviewJsDefault.default.addHandlerRender(controlRecipes);
     // publisher subscriber for view search results
     _searchviewJsDefault.default.addSearchHandler(searchControler);
-    // publisher subscriber for view paginesation buttons
+    // publisher subscriber for view pagination buttons
     _pagniationviewJsDefault.default.addClickHandler(paginationControler);
     // publisher subscriber for view Servings btns
     _recipeviewJsDefault.default.addServingsHandler(controlServings);
@@ -15201,8 +15200,8 @@ class AddRecipeView extends _viewJsDefault.default {
     _window = document.querySelector('.add-recipe-window');
     _btnOpen = document.querySelector('.nav__btn--add-recipe');
     _btnClose = document.querySelector('.btn--close-modal');
-    _msg = 'Recipe is added sucessfully :)';
-    //calling funictions
+    _msg = 'Recipe is added successfully :)';
+    //calling functions
     constructor(){
         super();
         this._addHandlerOpenWindow();
@@ -15213,7 +15212,7 @@ class AddRecipeView extends _viewJsDefault.default {
         this._window.classList.toggle('hidden');
         this._overlay.classList.toggle('hidden');
     }
-    //getting data from form amd passing tho handler funiction
+    //getting data from form amd passing tho handler function
     addHandlerUpload(handler) {
         this._parentElement.addEventListener('submit', (e)=>{
             e.preventDefault();

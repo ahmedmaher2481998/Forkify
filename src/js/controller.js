@@ -68,7 +68,7 @@ const controlServings = function (newServings) {
   RecipeView.update(model.state.recipe);
 };
 
-//add book mark conyroler
+//add book mark controller
 let contolerBookmark = () => {
   //add/remove bookmarks
   if (!model.state.recipe.Bookmarked) {
@@ -83,7 +83,7 @@ let contolerBookmark = () => {
   BookmarkView.render(model.state.bookmark);
 };
 
-//controler for add recipe by user
+//controller for add recipe by user
 let controlerAddRecipe = async function (newRecipe) {
   try {
     // debugger;
@@ -107,7 +107,7 @@ let controlerAddRecipe = async function (newRecipe) {
 };
 let init = function () {
   //retrive bookmarks from local storage ;
-  console.log('object');
+
   model.getBookmarks();
   BookmarkView.render(model.state.bookmark);
   // publisher subscriber for view recipe
@@ -116,7 +116,7 @@ let init = function () {
   // publisher subscriber for view search results
   searchview.addSearchHandler(searchControler);
 
-  // publisher subscriber for view paginesation buttons
+  // publisher subscriber for view pagination buttons
   pagniationview.addClickHandler(paginationControler);
 
   // publisher subscriber for view Servings btns
