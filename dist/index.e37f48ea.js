@@ -15877,7 +15877,6 @@ class SearchView extends _viewDefault.default {
     addSearchHandler(handler) {
         this._parentElement.addEventListener('submit', (e)=>{
             e.preventDefault();
-            console.log('################');
             handler();
         });
     }
