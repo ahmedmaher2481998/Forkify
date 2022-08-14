@@ -5,13 +5,13 @@ export default class View {
   _msg;
   /**
    *
-   * Render The recived object to the dom
-   * @param{Object | Object[]} data the data to be rendered {e.g recpie }
+   * Render The received object to the dom
+   * @param{Object | Object[]} data the data to be rendered {e.g recipe }
    * @param {boolean} {render = true } if false ,create markup string instead of rendering to the dom
    * @return {undefined | string } a markup string if render is false
    * @this {Object} View instance
    * @author ahmed maher
-   * @todo fix the post request error when uploading the recpie
+   * @todo fix the post request error when uploading the recipe
    */
   //rendering data to the usable format
   render(data, render = true) {
@@ -27,14 +27,14 @@ export default class View {
   // Update the changed parts only just like react
   update(data) {
     this._data = data;
-    // virtual dom from the markup  and making a rray out of it
+    // virtual dom from the markup  and making a array out of it
     let newDom = [
       ...document
         .createRange()
         .createContextualFragment(this._generateMarkup())
         .querySelectorAll('*'),
     ];
-    // the exisiting dom and making a rray out of it
+    // the existing dom and making a array out of it
     let currentDom = [...this._parentElement.querySelectorAll('*')];
 
     newDom.forEach((node, i) => {
@@ -46,7 +46,7 @@ export default class View {
           currentDom[i].textContent = node.textContent;
         }
 
-        // update the data-goToServent attribute to make the sevent change on the acutal dom
+        // update the data-goToServant attribute to make the servant change on the actual dom
         if (true) {
           [...node.attributes].forEach(att => {
             currentNode.setAttribute(att.name, att.value);
@@ -71,7 +71,7 @@ export default class View {
     this._parentElement.innerHTML = '';
   }
 
-  // erro handling
+  // error handling
   renderError(msg = this._errmsg) {
     let markup = `<div class="error">
             <div>
